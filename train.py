@@ -155,11 +155,11 @@ class GPT(nn.Module):
         n_embd = self.config.n_embd
         s = 3**0.5 * n_embd**-0.5
         for block in self.transformer.h:
-            torch.nn.init.uniform_(block.attn.c_q.weight, -s, s)
-            torch.nn.init.uniform_(block.attn.c_k.weight, -s, s)
-            torch.nn.init.uniform_(block.attn.c_v.weight, -s, s)
+            torch.nn.init.orthogonal_(block.attn.c_q.weight)
+            torch.nn.init.orthogonal_(block.attn.c_k.weight)
+            torch.nn.init.orthogonal_(block.attn.c_v.weight)
             torch.nn.init.zeros_(block.attn.c_proj.weight)
-            torch.nn.init.uniform_(block.mlp.c_fc.weight, -s, s)
+            torch.nn.init.orthogonal_(block.mlp.c_fc.weight)
             torch.nn.init.zeros_(block.mlp.c_proj.weight)
         # Per-layer scalars
         self.resid_lambdas.fill_(1.0)
